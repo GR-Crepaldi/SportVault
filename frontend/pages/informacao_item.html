@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informações do Item - SportVault</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/informacao_item.css">
+</head>
+<body>
+
+    <!-- Navegação -->
+    <nav class="navbar" role="navigation" aria-label="Navegação principal">
+        <a href="../index.html" class="logo">
+            <span class="text-gradient">Sport</span>Vault
+        </a>
+        <div class="nav-links">
+            <a href="../pages/dashboard.html">Dashboard</a>
+            <a href="../pages/listar_itens.html">Minha Coleção</a>
+        </div>
+    </nav>
+
+    <main class="info-page">
+        <header class="info-page__header">
+            <a href="../pages/listar_itens.html" class="btn btn-outline btn--back">
+                &#8592; Voltar à Coleção
+            </a>
+            <h1 class="info-page__title">Detalhes do <span class="text-gradient">Artigo</span></h1>
+        </header>
+
+        <section class="info-card glass-container" id="item-info-container">
+            <div id="loading-feedback" class="feedback-msg">Carregando informações do item...</div>
+            
+            <div id="item-details" hidden>
+                <div class="item-header">
+                    <h2 id="detalhe-nome">Nome do Item</h2>
+                    <div class="badges-group">
+                        <span id="detalhe-esporte" class="badge">Esporte</span>
+                        <span id="detalhe-tipo" class="badge">Tipo</span>
+                    </div>
+                </div>
+
+                <div class="item-body">
+                    <div class="info-group">
+                        <span class="info-label">Ano / Temporada</span>
+                        <span class="info-value" id="detalhe-ano">--</span>
+                    </div>
+                    <div class="info-group">
+                        <span class="info-label">Estado de Conservação</span>
+                        <span class="info-value" id="detalhe-estado">--</span>
+                    </div>
+                    <div class="info-group info-group--full">
+                        <span class="info-label">Descrição</span>
+                        <p class="info-value info-desc" id="detalhe-descricao">Nenhuma descrição informada.</p>
+                    </div>
+                    <div class="info-group">
+                        <span class="info-label">Cadastrado em</span>
+                        <span class="info-value" id="detalhe-data">--</span>
+                    </div>
+                </div>
+
+                <div class="item-actions">
+                    <a href="#" id="btn-editar" class="btn btn-primary">Editar Artigo</a>
+                    <button id="btn-deletar" class="btn btn-danger">Excluir Artigo</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="../js/informacao_item.js"></script>
+</body>
+</html>

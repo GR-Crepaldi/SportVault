@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cadastre um novo artigo esportivo na sua coleção SportVault.">
+    <title>Cadastrar Item - SportVault</title>
+
+    <!-- CSS Global do projeto -->
+    <link rel="stylesheet" href="../css/global.css">
+    <!-- CSS específico desta página -->
+    <link rel="stylesheet" href="../css/cadastrar_item.css">
+</head>
+<body>
+
+    <!-- ============================================================
+         NAVBAR — herda o padrão do projeto
+    ============================================================ -->
+    <nav class="navbar" role="navigation" aria-label="Navegação principal">
+        <a href="../index.html" class="logo" aria-label="Página inicial SportVault">
+            <span class="text-gradient">Sport</span>Vault
+        </a>
+        <div class="nav-links">
+            <a href="../pages/dashboard.html">Minha Coleção</a>
+        </div>
+    </nav>
+
+    <!-- ============================================================
+         CONTEÚDO PRINCIPAL
+    ============================================================ -->
+    <main class="form-page" id="topo">
+
+        <!-- Cabeçalho da seção -->
+        <header class="form-page__header">
+            <!-- Botão "Voltar" aponta para o Dashboard (mantém sessão ativa) -->
+            <a href="../pages/dashboard.html" class="btn btn-outline btn--back" id="btn-voltar-inicio" aria-label="Voltar para Minha Coleção">
+                &#8592; Voltar à coleção
+            </a>
+            <h1 class="form-page__title">
+                Cadastrar <span class="text-gradient">Novo Item</span>
+            </h1>
+            <p class="form-page__subtitle">
+                Preencha os dados abaixo para adicionar um artigo à sua coleção.
+            </p>
+        </header>
+
+        <!-- ============================================================
+             FORMULÁRIO PRINCIPAL — campos mapeados da tabela `itens`
+             (schema.sql: nome, esporte_id, tipo_id, time_id,
+              ano_artigo, estado_conservacao, descricao)
+        ============================================================ -->
+        <section class="form-card glass-container" aria-labelledby="form-heading">
+            <h2 id="form-heading" class="form-card__section-title">Dados do Artigo</h2>
+
+            <form
+                id="form-cadastrar-item"
+                class="item-form"
+                novalidate
+                aria-describedby="form-instrucoes"
+            >
+                <!-- Mensagem de instrução para leitores de tela -->
+                <p id="form-instrucoes" class="sr-only">
+                    Campos marcados com asterisco (*) são obrigatórios.
+                </p>
+
+                <!-- Feedback de submissão (acessível via aria-live) -->
+                <div
+                    id="form-feedback"
+                    class="form-feedback"
+                    role="alert"
+                    aria-live="polite"
+                    aria-atomic="true"
+                    hidden
+                ></div>
+
+                <!-- ------------------------------------------------
+                     CAMPO: nome (TEXT NOT NULL)
+                ------------------------------------------------ -->
+                <div class="form-group">
+                    <label for="nome" class="form-label">
+                        Nome do Artigo <span class="form-required" aria-hidden="true">*</span>
+                    </label>
+                    <input
+                        type="text"
+                        id="nome"
+                        name="nome"
+                        class="form-input"
+                        placeholder="Ex.: Camisa Seleção Brasileira 2002"
+                        maxlength="150"
+                        required
+                        aria-required="true"
+                        aria-describedby="nome-hint"
+                    >
+                    <span id="nome-hint" class="form-hint">
+                        Informe um nome descritivo para identificar o artigo.
+                    </span>
+                </div>
+
+                <!-- ------------------------------------------------
+                     CAMPO: esporte (TEXT direto — sem FK)
+                     Valores válidos: 'Futebol', 'Basquete',
+                     'Futebol Americano', 'Vôlei'
+                ------------------------------------------------ -->
+                <div class="form-group">
+                    <label for="esporte" class="form-label">
+                        Esporte <span class="form-required" aria-hidden="true">*</span>
+                    </label>
+                    <select
+                        id="esporte"
+                        name="esporte"
+                        class="form-input form-select"
+                        required
+                        aria-required="true"
+                        aria-describedby="esporte-hint"
+                    >
+                        <option value="" disabled selected>Selecione o esporte…</option>
+                        <option value="Futebol">Futebol</option>
+                        <option value="Basquete">Basquete</option>
+                        <option value="Futebol Americano">Futebol Americano</option>
+                        <option value="Vôlei">Vôlei</option>
+                    </select>
+                    <span id="esporte-hint" class="form-hint">
+                        Categoria esportiva à qual o artigo pertence.
+                    </span>
+                </div>
+
+                <!-- ------------------------------------------------
+                     CAMPO: tipo (TEXT direto — sem FK)
+                     Valores válidos: 'Camisa', 'Bola',
+                     'Calçado', 'Acessório/Outros'
+                ------------------------------------------------ -->
+                <div class="form-group">
+                    <label for="tipo" class="form-label">
+                        Tipo de Item <span class="form-required" aria-hidden="true">*</span>
+                    </label>
+                    <select
+                        id="tipo"
+                        name="tipo"
+                        class="form-input form-select"
+                        required
+                        aria-required="true"
+                        aria-describedby="tipo-hint"
+                    >
+                        <option value="" disabled selected>Selecione o tipo…</option>
+                        <option value="Camisa">Camisa</option>
+                        <option value="Bola">Bola</option>
+                        <option value="Calçado">Calçado</option>
+                        <option value="Acessório/Outros">Acessório / Outros</option>
+                    </select>
+                    <span id="tipo-hint" class="form-hint">
+                        Categoria do artigo dentro do seu vault.
+                    </span>
+                </div>
+
+                <!-- ------------------------------------------------
+                     CAMPO: time_id (FK → tabela times, NULLABLE)
+                     Preenchimento livre: o JS converte para FK no back-end.
+                     Campo opcional conforme o schema.
+                ------------------------------------------------ -->
+                <div class="form-group">
+                    <label for="time" class="form-label">
+                        Time / Seleção
+                        <span class="form-optional">(opcional)</span>
+                    </label>
+                    <input
+                        type="text"
+                        id="time"
+                        name="time_nome"
+                        class="form-input"
+                        placeholder="Ex.: Flamengo, Los Angeles Lakers…"
+                        maxlength="100"
+                        aria-describedby="time-hint"
+                    >
+                    <span id="time-hint" class="form-hint">
+                        Deixe em branco se o artigo não pertencer a um time específico.
+                    </span>
+                </div>
+
+                <!-- ------------------------------------------------
+                     CAMPO: ano_artigo (TEXT, NULLABLE)
+                     Aceita formatos flexíveis: '2002', '2024/25'.
+                ------------------------------------------------ -->
+                <div class="form-group">
+                    <label for="ano-artigo" class="form-label">
+                        Ano / Temporada
+                        <span class="form-optional">(opcional)</span>
+                    </label>
+                    <input
+                        type="text"
+                        id="ano-artigo"
+                        name="ano_artigo"
+                        class="form-input"
+                        placeholder="Ex.: 2002  ou  2024/25"
+                        maxlength="10"
+                        pattern="^\d{4}(\/\d{2,4})?$"
+                        aria-describedby="ano-hint"
+                    >
+                    <span id="ano-hint" class="form-hint">
+                        Use o formato <strong>AAAA</strong> ou <strong>AAAA/AA</strong> para temporadas.
+                    </span>
+                </div>
+
+                <!-- ------------------------------------------------
+                     CAMPO: estado_conservacao (TEXT NOT NULL)
+                     Valores válidos: 'Novo', 'Conservado', 'Usado'
+                     Usamos radio buttons para maior clareza.
+                ------------------------------------------------ -->
+                <fieldset class="form-group form-fieldset" aria-required="true">
+                    <legend class="form-label">
+                        Estado de Conservação <span class="form-required" aria-hidden="true">*</span>
+                    </legend>
+                    <div class="radio-group" role="radiogroup" aria-describedby="estado-hint">
+
+                        <label class="radio-label" for="estado-novo">
+                            <input
+                                type="radio"
+                                id="estado-novo"
+                                name="estado_conservacao"
+                                value="Novo"
+                                class="radio-input"
+                                required
+                                aria-required="true"
+                            >
+                            <span class="radio-custom"></span>
+                            <span class="radio-text">
+                                <strong>Novo</strong>
+                                <small>Nunca usado, com etiqueta ou embalagem original.</small>
+                            </span>
+                        </label>
+
+                        <label class="radio-label" for="estado-conservado">
+                            <input
+                                type="radio"
+                                id="estado-conservado"
+                                name="estado_conservacao"
+                                value="Conservado"
+                                class="radio-input"
+                            >
+                            <span class="radio-custom"></span>
+                            <span class="radio-text">
+                                <strong>Conservado</strong>
+                                <small>Usado, porém em ótimo estado de conservação.</small>
+                            </span>
+                        </label>
+
+                        <label class="radio-label" for="estado-usado">
+                            <input
+                                type="radio"
+                                id="estado-usado"
+                                name="estado_conservacao"
+                                value="Usado"
+                                class="radio-input"
+                            >
+                            <span class="radio-custom"></span>
+                            <span class="radio-text">
+                                <strong>Usado</strong>
+                                <small>Apresenta sinais de uso evidentes.</small>
+                            </span>
+                        </label>
+
+                    </div>
+                    <span id="estado-hint" class="form-hint">
+                        Selecione o estado físico atual do artigo.
+                    </span>
+                </fieldset>
+
+                <!-- ------------------------------------------------
+                     CAMPO: descricao (TEXT, NULLABLE)
+                     Observações adicionais — campo livre.
+                ------------------------------------------------ -->
+                <div class="form-group">
+                    <label for="descricao" class="form-label">
+                        Descrição / Observações
+                        <span class="form-optional">(opcional)</span>
+                    </label>
+                    <textarea
+                        id="descricao"
+                        name="descricao"
+                        class="form-input form-textarea"
+                        placeholder="Descreva detalhes especiais, autógrafos, edições limitadas…"
+                        rows="4"
+                        maxlength="500"
+                        aria-describedby="descricao-hint descricao-contador"
+                    ></textarea>
+                    <div class="form-textarea-footer">
+                        <span id="descricao-hint" class="form-hint">
+                            Informações adicionais que enriquecem o registro do artigo.
+                        </span>
+                        <span id="descricao-contador" class="form-hint char-counter" aria-live="polite">
+                            0 / 500
+                        </span>
+                    </div>
+                </div>
+
+                <!-- ------------------------------------------------
+                     AÇÕES DO FORMULÁRIO
+                ------------------------------------------------ -->
+                <div class="form-actions">
+                    <a
+                        href="../pages/dashboard.html"
+                        class="btn btn-outline"
+                        id="btn-cancelar"
+                        aria-label="Cancelar e voltar para a coleção"
+                    >
+                        Cancelar
+                    </a>
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                        id="btn-salvar"
+                        aria-label="Salvar novo item na coleção"
+                    >
+                        <span class="btn-text">Salvar Item</span>
+                        <span class="btn-spinner" aria-hidden="true" hidden></span>
+                    </button>
+                </div>
+
+            </form>
+        </section>
+
+    </main>
+
+    <!-- ============================================================
+         FOOTER SIMPLES
+    ============================================================ -->
+    <footer class="form-footer" role="contentinfo">
+        <p>&copy; 2026 SportVault &mdash; Todos os direitos reservados.</p>
+    </footer>
+
+    <!-- JS específico desta página -->
+    <script src="../js/cadastrar_item.js"></script>
+
+</body>
+</html>

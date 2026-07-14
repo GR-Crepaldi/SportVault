@@ -1,0 +1,21 @@
+# ================================
+# SportVault - Dependências Python
+# ================================
+
+# Framework Web
+Flask==3.1.1
+
+# Variáveis de ambiente
+python-dotenv==1.0.1
+
+# Utilitários Flask
+Flask-CORS==5.0.1
+
+# Autenticação JWT
+Flask-JWT-Extended==4.7.1
+
+# Hashing de senhas
+bcrypt==4.3.0
+
+# Serialização / validação de dados
+marshmallow==3.26.1

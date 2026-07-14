@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - SportVault</title>
+    <!-- Importando o CSS Global e Específico -->
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/auth.css">
+</head>
+<body class="auth-page">
+
+    <main class="glass-container auth-card">
+        <header class="auth-header">
+            <h2>Bem-vindo de volta!</h2>
+            <p>Acesse sua coleção SportVault</p>
+        </header>
+
+        <!-- Formulário de Login -->
+        <form id="login-form" class="auth-form">
+            <div id="error-message" class="error-msg"></div>
+            
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" name="email" placeholder="seu@email.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="senha">Senha</label>
+                <input type="password" id="senha" name="senha" placeholder="Sua senha" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Entrar</button>
+        </form>
+
+        <footer class="auth-footer">
+            <p>Ainda não tem uma conta? <a href="register.html">Cadastre-se</a></p>
+        </footer>
+    </main>
+
+    <!-- Script com lógica de login usando a Fetch API -->
+    <script src="../js/auth.js"></script>
+</body>
+</html>

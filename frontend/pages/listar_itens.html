@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Visualize todos os artigos esportivos cadastrados na sua coleção SportVault.">
+    <title>Minha Coleção - SportVault</title>
+
+    <!-- CSS Global do projeto (variáveis, navbar, botões, glassmorphism) -->
+    <link rel="stylesheet" href="../css/global.css">
+    <!-- CSS específico desta página -->
+    <link rel="stylesheet" href="../css/listar_itens.css">
+</head>
+<body>
+
+    <!-- ============================================================
+         NAVBAR — padrão do projeto
+    ============================================================ -->
+    <nav class="navbar" role="navigation" aria-label="Navegação principal">
+        <a href="../index.html" class="logo" aria-label="Página inicial SportVault">
+            <span class="text-gradient">Sport</span>Vault
+        </a>
+        <div class="nav-links">
+            <a href="../pages/dashboard.html">Dashboard</a>
+        </div>
+    </nav>
+
+    <!-- ============================================================
+         CONTEÚDO PRINCIPAL
+    ============================================================ -->
+    <main class="list-page" id="topo">
+
+        <!-- Cabeçalho da seção -->
+        <header class="list-page__header">
+            <!-- Botão "Voltar para o Menu" → Dashboard -->
+            <a
+                href="../pages/dashboard.html"
+                class="btn btn-outline btn--back"
+                id="btn-voltar-menu"
+                aria-label="Voltar para o Dashboard"
+            >
+                &#8592; Voltar para o Menu
+            </a>
+
+            <div class="list-page__title-group">
+                <h1 class="list-page__title">
+                    Minha <span class="text-gradient">Coleção</span>
+                </h1>
+                <p class="list-page__subtitle" id="contagem-itens">
+                    Carregando itens…
+                </p>
+            </div>
+
+            <!-- Ação rápida para cadastro -->
+            <a
+                href="../pages/cadastrar_item.html"
+                class="btn btn-primary"
+                id="btn-novo-item"
+                aria-label="Cadastrar novo artigo esportivo"
+            >
+                + Novo Item
+            </a>
+        </header>
+
+        <!-- ============================================================
+             ÁREA DA TABELA
+        ============================================================ -->
+        <section class="table-wrapper glass-container" aria-labelledby="table-heading">
+            <h2 id="table-heading" class="sr-only">Lista de artigos esportivos cadastrados</h2>
+
+            <!-- Feedback de carregamento / erros (acessível) -->
+            <div
+                id="table-feedback"
+                class="table-feedback"
+                role="status"
+                aria-live="polite"
+                aria-atomic="true"
+                hidden
+            ></div>
+
+            <!-- --------------------------------------------------------
+                 TABELA SEMÂNTICA
+                 Colunas mapeadas diretamente dos campos da tabela `itens`:
+                   id | nome | esporte | tipo | ano_artigo | estado_conservacao
+            -------------------------------------------------------- -->
+            <div class="table-responsive" role="region" aria-label="Tabela da coleção" tabindex="0">
+                <table class="colecao-table" id="tabela-itens" aria-describedby="table-heading">
+
+                    <!-- CABEÇALHO DA TABELA -->
+                    <thead class="colecao-table__head">
+                        <tr>
+                            <th scope="col" class="col-id"    aria-sort="none">ID</th>
+                            <th scope="col" class="col-nome"  aria-sort="none">Nome do Artigo</th>
+                            <th scope="col" class="col-esporte">Esporte</th>
+                            <th scope="col" class="col-tipo">Tipo</th>
+                            <th scope="col" class="col-ano">Ano / Temporada</th>
+                            <th scope="col" class="col-estado">Estado de Conservação</th>
+                        </tr>
+                    </thead>
+
+                    <!-- CORPO DA TABELA — populado via JS (listar_itens.js) -->
+                    <tbody class="colecao-table__body" id="tbody-itens">
+                        <!--
+                            As linhas (<tr>) serão inseridas dinamicamente pelo JavaScript.
+                            Enquanto carrega, um spinner é exibido no #table-feedback acima.
+                        -->
+                    </tbody>
+
+                    <!-- RODAPÉ (total de itens, inserido pelo JS) -->
+                    <tfoot class="colecao-table__foot">
+                        <tr>
+                            <td colspan="6" id="table-footer-info" class="table-foot-info">
+                                &mdash;
+                            </td>
+                        </tr>
+                    </tfoot>
+
+                </table>
+            </div>
+
+            <!-- Estado vazio — visível quando não há itens cadastrados -->
+            <div class="empty-state" id="empty-state" hidden aria-live="polite">
+                <span class="empty-state__icon" aria-hidden="true">&#127974;</span>
+                <h3 class="empty-state__title">Sua coleção está vazia!</h3>
+                <p class="empty-state__text">Que tal adicionar o seu primeiro artigo esportivo?</p>
+                <a href="../pages/cadastrar_item.html" class="btn btn-primary">
+                    + Cadastrar Primeiro Item
+                </a>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- ============================================================
+         FOOTER
+    ============================================================ -->
+    <footer class="list-footer" role="contentinfo">
+        <p>&copy; 2026 SportVault &mdash; Todos os direitos reservados.</p>
+    </footer>
+
+    <!-- JS específico desta página -->
+    <script src="../js/listar_itens.js"></script>
+
+</body>
+</html>

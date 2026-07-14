@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Coleção - SportVault</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+<body class="dashboard-layout">
+
+    <!-- Header do Dashboard -->
+    <header class="dashboard-header">
+        <a href="../index.html" class="logo">
+            <span class="text-gradient">Sport</span>Vault
+        </a>
+        <div class="user-info">
+            <span class="user-name" id="display-user-name">Carregando...</span>
+            <button id="btn-logout" class="btn btn-outline" style="padding: 8px 16px; font-size: 0.85rem;">Sair</button>
+        </div>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main class="dashboard-content">
+        <div class="dashboard-topbar">
+            <div>
+                <h1>Minha Coleção</h1>
+                <p id="dashboard-subtitle" style="color: var(--text-muted);">Carregando informações...</p>
+            </div>
+            
+            <!-- Botões de ação do dashboard -->
+            <div class="dashboard-actions">
+                <a href="listar_itens.html" class="btn btn-outline" style="font-size: 1rem; padding: 12px 22px;">&#128247; Acessar sua Coleção</a>
+                <a href="cadastrar_item.html" class="btn btn-primary" style="font-size: 1.1rem; padding: 14px 28px;">+ Cadastrar Novos Itens</a>
+            </div>
+        </div>
+
+        <!-- Grid de Itens (Será populado via JS no futuro) -->
+        <div class="items-grid" id="items-grid">
+            
+            <!-- Estado Vazio Inicial -->
+            <div class="empty-state" id="empty-state" style="grid-column: 1 / -1;">
+                <h3>Sua coleção está vazia!</h3>
+                <p>Que tal adicionar a sua primeira camisa ou bola?</p>
+                <a href="cadastrar_item.html" class="btn btn-outline">Adicionar Meu Primeiro Item</a>
+            </div>
+
+            <!-- Exemplo de como um item aparecerá na tela após implementarmos a listagem -->
+            <!-- 
+            <div class="item-card">
+                <div class="item-badge">Camisa</div>
+                <h3>Seleção Brasileira 2002</h3>
+                <p><strong>Esporte:</strong> Futebol</p>
+                <p><strong>Estado:</strong> Novo</p>
+                <p><strong>Ano:</strong> 2002</p>
+            </div> 
+            -->
+
+        </div>
+    </main>
+
+    <!-- Script de Inicialização Básica do Dashboard -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Verifica se o usuário está logado
+            const token = localStorage.getItem('sportvault_token');
+            const userStr = localStorage.getItem('sportvault_user');
+            
+            if (!token || !userStr) {
+                // Se não estiver autenticado, redireciona para login
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Mostra o nome do usuário
+            const user = JSON.parse(userStr);
+            document.getElementById('display-user-name').textContent = `Olá, ${user.nome}`;
+
+            // Busca os itens recentes e atualiza os contadores
+            fetch('http://127.0.0.1:5000/api/itens', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.sucesso) {
+                    const itens = data.itens || [];
+                    const subtitle = document.getElementById('dashboard-subtitle');
+                    const emptyState = document.getElementById('empty-state');
+                    const grid = document.getElementById('items-grid');
+                    
+                    if (itens.length === 0) {
+                        subtitle.textContent = "Sua coleção está vazia.";
+                        emptyState.style.display = 'block';
+                    } else {
+                        subtitle.innerHTML = `Você possui <strong>${itens.length}</strong> ${itens.length === 1 ? 'item' : 'itens'} na sua coleção. Aqui estão os mais recentes:`;
+                        emptyState.style.display = 'none';
+                        
+                        // Limita para os 3 itens mais recentes
+                        const ultimos = itens.slice(0, 3);
+                        ultimos.forEach(item => {
+                            const card = document.createElement('div');
+                            card.className = 'item-card';
+                            
+                            // Ajuste rápido de cores da badge do dashboard
+                            let badgeBg = 'rgba(59, 130, 246, 0.2)';
+                            let badgeColor = '#60a5fa';
+                            if(item.tipo === 'Bola') { badgeBg = 'rgba(236, 72, 153, 0.2)'; badgeColor = '#f472b6'; }
+                            else if(item.tipo === 'Calçado') { badgeBg = 'rgba(20, 184, 166, 0.2)'; badgeColor = '#2dd4bf'; }
+                            else if(item.tipo === 'Acessório/Outros') { badgeBg = 'rgba(148, 163, 184, 0.2)'; badgeColor = '#94a3b8'; }
+
+                            card.innerHTML = `
+                                <div class="item-badge" style="background: ${badgeBg}; color: ${badgeColor};">${item.tipo}</div>
+                                <h3>${item.nome}</h3>
+                                <p><strong>Esporte:</strong> ${item.esporte}</p>
+                                <p><strong>Estado:</strong> ${item.estado_conservacao}</p>
+                                <p><strong>Ano:</strong> ${item.ano_artigo || '—'}</p>
+                            `;
+                            grid.appendChild(card);
+                        });
+                    }
+                }
+            })
+            .catch(err => {
+                console.error("Erro ao carregar coleção:", err);
+                document.getElementById('dashboard-subtitle').textContent = "Erro ao carregar informações da coleção.";
+            });
+
+            // Ação de Logout
+            document.getElementById('btn-logout').addEventListener('click', () => {
+                localStorage.removeItem('sportvault_token');
+                localStorage.removeItem('sportvault_user');
+                window.location.href = '../index.html';
+            });
+        });
+    </script>
+</body>
+</html>
